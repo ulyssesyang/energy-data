@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^1.5.2",
+    "country-code-lookup": "0.0.2",
     "line-reader": "^0.3.0",
     "mongojs": "^2.3.0"
   }
