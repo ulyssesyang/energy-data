@@ -49,7 +49,7 @@ lineReader.eachLine(`${__dirname}/INTL.txt`, function (line, last, callback) {
 		};
 
 		db.series.save(series, (error) => {
-			console.log(JSON.stringify(series, null, 4));
+			console.log(series._id);
 			next(error);
 		});
 	}, (error) => {
