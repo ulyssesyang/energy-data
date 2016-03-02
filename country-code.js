@@ -31,7 +31,7 @@ async.waterfall([
 					}, { 
 						multi: true
 					}, (error, up) => {
-						console.log(error, up)
+						console.log(error, upo)
 						next();
 					});
 				});
