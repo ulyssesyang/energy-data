@@ -4,6 +4,8 @@ const lineReader = require('line-reader');
 const async = require('async');
 const lookup = require('country-code-lookup');
 const db = mongojs('mongodb://localhost:27017/energy-data', [ 'series' ]);
+const XXHash = require('xxhash');
+const SEED = 0;
 var index = 0;
 
 db.series.ensureIndex({ value: 1 });
@@ -31,8 +33,13 @@ lineReader.eachLine(`${__dirname}/INTL.txt`, function (line, last, callback) {
 					.replace('Zaire (Dem Rep of Congo)', 'Zaire')
 					.replace(/\s(China)/ig, '');
 			});
+
+		let year_date = new Date(year[0]);
+		let id_str = `${original_series.series_id}:${year[0]}`;
+		let hash = XXHash.hash(new Buffer(id_str), SEED);
+
 		let series = {
-			_id: original_series.series_id,
+			_id: hash,
 			name: original_series.name,
 			year: new Date(year[0]),
 			value: year[1],
@@ -42,7 +49,7 @@ lineReader.eachLine(`${__dirname}/INTL.txt`, function (line, last, callback) {
 		};
 
 		db.series.save(series, (error) => {
-			console.log(`saved record ${series._id}`);
+			console.log(JSON.stringify(series, null, 4));
 			next(error);
 		});
 	}, (error) => {
